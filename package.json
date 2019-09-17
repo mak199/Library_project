@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/mak199/Library_project/issues"
   },
-  "homepage": "https://github.com/mak199/Library_project#readme"
+  "homepage": "https://github.com/mak199/Library_project#readme",
+  "dependencies": {
+    "winston": "^3.2.1"
+  }
 }
