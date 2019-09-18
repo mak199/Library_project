@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const users = require('./routes/users');
 const books = require('./routes/books');
+const lendings = require('./routes/lendings');
 const mongoose = require('mongoose');
 
 
@@ -12,6 +13,8 @@ mongoose.connect('mongodb://localhost:/library', {useNewUrlParser: true,useUnifi
 app.use(express.json());
 app.use('/users',users);
 app.use('/books',books);
+app.use('/lendings',lendings);
+
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () =>
