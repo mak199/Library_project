@@ -3,6 +3,7 @@ const app = express();
 const users = require('./routes/users');
 const books = require('./routes/books');
 const lendings = require('./routes/lendings');
+const returns = require('./routes/returns');
 const mongoose = require('mongoose');
 
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/users',users);
 app.use('/books',books);
 app.use('/lendings',lendings);
+app.use('/returns',returns);
 
 
 const port = process.env.PORT || 3000;

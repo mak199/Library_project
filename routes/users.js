@@ -5,8 +5,11 @@ const {User,validateUser} = require('../models/user');
 
 
 router.get('/',async(req,res)=>{
-
-    res.send("hello World");
+    const user = await User.find()
+        .select('-__v')
+        .sort('name');
+    res.status(200).send(user);
+    
 });
 
 router.post('/',async(req,res)=>{

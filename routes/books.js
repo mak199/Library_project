@@ -4,7 +4,11 @@ const router = express.Router();
 const {Book,validateBooks} = require('../models/book');
 
 router.get('/',async(req,res)=>{
-    res.send("In Books");
+    const book = await Book.find()
+    .select("-__v")
+    .sort("author");
+  res.send(book);
+
 });
 router.post('/',async(req,res)=>{
     const {error} = validateBooks(req.body);
