@@ -23,6 +23,8 @@ router.post('/',async(req,res)=>{
         }
     });
     lending = await lending.save();
+    book.stock = book.stock - 1;
+    await book.save();
     res.status(200).send(lending);
 
 })
