@@ -1,32 +1,46 @@
 const mongoose = require('mongoose');
 const joi = require('joi');
-
+const jwt = require("jsonwebtoken");
+const config = require('config');
 
 const userSchema = mongoose.Schema({
     name:{
         type:String,
-        required:true,
+        required:true
     },
-    course:{
+    password:{
         type:String,
         required:true
     },
-    universityID:{
-        type:String,
-        required:true
+    isAdmin:{
+        type:Boolean,
+        default:false
     }
 });
 
-function validateUser(user){
+userSchema.methods.generateAuthToken = function() {
+    const token = jwt.sign(
+      {
+        _id: this._id,
+        name: this.name,
+        password: this.password,
+        isAdmin: this.isAdmin
+      },
+      config.get("jwtPrivateKey")
+    );
+    return token;
+  };
+  
+
+const User = mongoose.model('User',userSchema);
+
+const validateUser = function(user){
     const schema = {
-        name:joi.string().min(3).required(),
-        course:joi.string().min(3).required(),
-        universityID:joi.string().min(6).required()
+        name:joi.string().required().min(3).max(255),
+        password:joi.string().required().min(6).max(255)
     }
     return joi.validate(user,schema);
 }
-
-const User = mongoose.model('User',userSchema);
 
 exports.User = User;
 exports.validateUser = validateUser;

@@ -4,7 +4,7 @@ joi.objectId = require('joi-objectid')(joi);
 
 const lenderSchema = mongoose.Schema({
 
-    user: { 
+    student: { 
         type: new mongoose.Schema({
           name:{
               type:String,
@@ -35,7 +35,7 @@ const lenderSchema = mongoose.Schema({
 
 function validateLending(lending){
     const schema = {
-        userId:joi.objectId().required(),
+        studentId:joi.objectId().required(),
         bookId:joi.objectId().required()
     }
     return joi.validate(lending,schema);

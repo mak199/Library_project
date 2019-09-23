@@ -12,7 +12,7 @@ const returnSchema = mongoose.Schema({
         }),
         required:true
     },
-    user:{
+    student:{
         type:new mongoose.Schema({
             name:{
                 type:String,
@@ -27,7 +27,7 @@ const returnSchema = mongoose.Schema({
 const validateReturns = function(returns){
     const schema ={
         bookId:joi.objectId().required(),
-        userId:joi.objectId().required()
+        studentId:joi.objectId().required()
     }
     return joi.validate(returns,schema);
 }
