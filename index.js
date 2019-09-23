@@ -5,6 +5,7 @@ const books = require('./routes/books');
 const lendings = require('./routes/lendings');
 const returns = require('./routes/returns');
 const users = require('./routes/users');
+const auth = require('./routes/auth');
 const mongoose = require('mongoose');
 
 
@@ -18,6 +19,7 @@ app.use('/books',books);
 app.use('/lendings',lendings);
 app.use('/returns',returns);
 app.use('/users',users);
+app.use('/auth',auth);
 
 
 const port = process.env.PORT || 3000;
