@@ -5,12 +5,17 @@ const {User} = require('../models/user');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
+const flash = require('connect-flash');
+
+router.get('/',(req,res)=>{
+  res.render("login");
+});
 
 router.post('/', async (req, res) => {
   const { error } = validate(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
 
-  let user = await User.findOne({ name: req.body.name });
+  let user = await User.findOne({ email: req.body.email });
   if (!user) return res.status(400).send('Invalid email or password.');
 
   const validPassword = await bcrypt.compare(req.body.password, user.password);
@@ -22,7 +27,7 @@ router.post('/', async (req, res) => {
 
 function validate(req) {
   const schema = {
-    name: Joi.string().min(5).max(255).required(),
+    email: Joi.string().email({ minDomainAtoms: 2 }).min(5).max(255).required(),
     password: Joi.string().min(5).max(255).required()
   };
 

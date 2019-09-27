@@ -4,6 +4,10 @@ const jwt = require("jsonwebtoken");
 const config = require('config');
 
 const userSchema = mongoose.Schema({
+    email:{
+        type:String,
+        required:true
+    },
     name:{
         type:String,
         required:true
@@ -36,8 +40,10 @@ const User = mongoose.model('User',userSchema);
 
 const validateUser = function(user){
     const schema = {
+        email:joi.string().email({ minDomainAtoms: 2 }).required().min(3).max(255),
         name:joi.string().required().min(3).max(255),
-        password:joi.string().required().min(6).max(255)
+        password:joi.string().required().min(6).max(255),
+        password2:joi.string().required().min(6).max(255)
     }
     return joi.validate(user,schema);
 }
