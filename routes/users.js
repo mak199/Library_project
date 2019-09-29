@@ -5,12 +5,7 @@ const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const passport = require('passport');
 const Joi = require('joi');
-
-
-router.get('/dashboard',(req,res)=>{
-
-    res.render("dashboard");
-});
+const {ensureAuthenticated} = require('../config/auth');
 
 
 router.get('/login',(req,res)=>{
@@ -20,6 +15,25 @@ router.get('/login',(req,res)=>{
 router.get('/register',(req,res)=>{
     res.render("register");
 });
+
+router.get('/ucadUsers',ensureAuthenticated,(req,res)=>{
+    res.render('ucadUsers',{
+     
+    });
+})
+
+router.get('/ucadDB',ensureAuthenticated,(req,res)=>{
+    res.render('ucadDB',{
+     
+    });
+})
+
+router.get('/selectDB',ensureAuthenticated,(req,res)=>{
+    res.render('selectDB',{
+     
+    });
+})
+
 
 router.post('/register',async(req,res)=>{
     let user;
@@ -55,52 +69,9 @@ router.post('/register',async(req,res)=>{
    
 });
 
-/*
-router.post('/login',async(req,res,next)=>{
-    let errors = [];
-    const { error } = validateLogin(req.body); 
-    if (error) errors.push({msg:error.details[0].message});//return res.status(400).send(error.details[0].message);
-    
-    const {email,password} = req.body;
-
-    let user = await User.findOne({ email:email});
-    if (!user) errors.push({msg:'Incorrect email or password'});//return res.status(400).send('Invalid email or password.');
-  
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) errors.push({msg:'Incorrect email or password'});//return res.status(400).send('Invalid email or password.');
-    
-    if(errors.length>0){
-        res.render('login',{
-            errors,
-            email,
-            password
-        });
-    }
-    else{
-        const token = user.generateAuthToken();
-        //res.send(token);
-        req.flash('success_msg','You are logged in!!!');
-        res.redirect('/books/ucad');
-        //res.render('ucadBooks');
-        
-    }
-
-   
-});
-
-
-function validateLogin(req) {
-    const schema = {
-      email: Joi.string().email({ minDomainAtoms: 2 }).min(5).max(255).required(),
-      password: Joi.string().min(6).max(255).required()
-    };
-  
-    return Joi.validate(req, schema);
-  }
-*/
 router.post('/login',(req,res,next)=>{
     passport.authenticate('local',{
-        successRedirect:'/books/ucad',
+        successRedirect:'/users/selectDB',
         failureRedirect:'/users/login',
         failureFlash:true
     })(req,res,next);
