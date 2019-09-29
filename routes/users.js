@@ -7,6 +7,12 @@ const passport = require('passport');
 const Joi = require('joi');
 
 
+router.get('/dashboard',(req,res)=>{
+
+    res.render("dashboard");
+});
+
+
 router.get('/login',(req,res)=>{
     res.render("login");
 });
@@ -49,9 +55,10 @@ router.post('/register',async(req,res)=>{
    
 });
 
+/*
 router.post('/login',async(req,res,next)=>{
     let errors = [];
-    const { error } = validate(req.body); 
+    const { error } = validateLogin(req.body); 
     if (error) errors.push({msg:error.details[0].message});//return res.status(400).send(error.details[0].message);
     
     const {email,password} = req.body;
@@ -72,25 +79,37 @@ router.post('/login',async(req,res,next)=>{
     else{
         const token = user.generateAuthToken();
         //res.send(token);
-        req.flash('success_msg','You are now logged out');
-        res.redirect('/users/login');
+        req.flash('success_msg','You are logged in!!!');
+        res.redirect('/books/ucad');
+        //res.render('ucadBooks');
+        
     }
 
    
 });
 
-function validate(req) {
+
+function validateLogin(req) {
     const schema = {
       email: Joi.string().email({ minDomainAtoms: 2 }).min(5).max(255).required(),
-      password: Joi.string().min(5).max(255).required()
+      password: Joi.string().min(6).max(255).required()
     };
   
     return Joi.validate(req, schema);
   }
+*/
+router.post('/login',(req,res,next)=>{
+    passport.authenticate('local',{
+        successRedirect:'/books/ucad',
+        failureRedirect:'/users/login',
+        failureFlash:true
+    })(req,res,next);
+});
+
 
 router.get('/logout',(req,res)=>{
     req.logOut();
-    //req.flash('success_msg','You are now logged out');
+    req.flash('success_msg','You are now logged out');
     res.redirect('/users/login');
 })
 module.exports = router;

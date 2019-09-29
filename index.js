@@ -12,7 +12,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
 
-//require('./config/passport')(passport);
+require('./config/passport')(passport);
 
 
 mongoose.connect('mongodb://localhost:/library', {useNewUrlParser: true,useUnifiedTopology: true})
@@ -25,15 +25,17 @@ app.set('view engine','ejs');
 app.use(express.urlencoded({extended:false}));
 
 
-//app.use(passport.initialize());
-//app.use(passport.session());
-
 // Express session middleware
 app.use(session({
   secret:'secret',
   resave:true,
   saveUninitialized:true
 }));
+
+
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
